@@ -17,7 +17,7 @@ class mysqlsession{
 		return this.pool.getConnection();
 	}
 	releaseConnection(conn){
-		return this.pool.pool.releaseConnection(conn);
+		conn.release();
 	}
 	
 }

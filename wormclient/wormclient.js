@@ -1,6 +1,7 @@
 let Transaction=require(__dirname+"/../transaction/transaction.js");
 let Session=require(__dirname+"/mysqlsession.js");
 let createWorm=require(__dirname+"/../createworm.js");
+let typedef=require(__dirname+"/../typedef.js");
 
 class wormclient{
 	constructor(option){
@@ -9,8 +10,17 @@ class wormclient{
 
 		this.connected=false;
 	}
-	query(){
-		return this.session.query(...arguments);
+	async queryRow(){
+		let ret=await this.query(...arguments);
+		if(!ret[0])throw new Error("queryRow failed");
+
+		return ret[0];
+	}
+	async query(){
+		let ret=await this.session.query(...arguments);
+		if(!ret[0])throw new Error("query failed");
+
+		return ret[0];
 	}
 	async init(){
 		await this.session.init();
@@ -34,7 +44,7 @@ class wormclient{
 
 		let res=await this.query(sql,values);
 
-		return res[0].insertId;
+		return res.insertId;
 	}
 	async createSheet(sheet,data){
 		let struct=["_id int PRIMARY KEY AUTO_INCREMENT"];
@@ -50,7 +60,18 @@ class wormclient{
 
 		return this.query(sql);
 	}
+	async getRow(wormname,insId,datadef){
+		let _data=await this.queryRow(`select * from ${wormname} where _id= ?`,[insId]);
+		let data=typedef.sqldata2data(_data,datadef);
+
+		for(let i in data){
+			this[i]=data[i];
+		}
+
+		return data;
+	}
 	async getTransaction(wormname,insId,datadef){
+
 		let trans=new Transaction(this.session,wormname,insId,datadef);
 		await trans._init();
 

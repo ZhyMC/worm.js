@@ -1,3 +1,5 @@
+let whereBuild=require("sql-where-builder");
+
 class wormarray{
 
 	constructor(worm){
@@ -8,21 +10,21 @@ class wormarray{
 	}
 	async find(condition){//在数组里寻找指定条件的实例
 
-		let keys=[];
-		let values=[];
-		for(let i in condition){
-			keys.push(`${i} = ?`);
-			values.push(condition[i]);
-		}
+		let builtWhere=whereBuild(condition);
 
 		let from=`FROM ` + this.$name;
-		let where=(keys.length > 0 ? `WHERE ` : ``) + keys.join(' AND ');
+		let where=(builtWhere.parameters.length > 0 ? `WHERE ` : ``) + builtWhere.statement;
 
 		let sql=`SELECT * ${from} ${where}`;
 //		console.log(sql);
 
-		let res=await this.$client.query(sql,values);
-		console.log(res);
+		let resdata=await this.$client.query(sql,builtWhere.parameters);
+
+		let insarr=[];
+		for(let r of resdata)
+		insarr.push(this.$worm.from(r._id,r));
+
+		return insarr;
 	}
 
 }

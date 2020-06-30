@@ -19,6 +19,9 @@ async function createWorm(options){
 			this._init();
 
 		}
+		get(){
+			return this.$worm.$client.getRow(this.$worm.$name,this.$id,this.$worm.$data);
+		}
 		getId(){
 			return this.$id;
 		}
@@ -106,7 +109,9 @@ async function createWorm(options){
 			data[i]=typedef.getTypeDef(datadef[i]).default;
 		}
 
-		let constr=this.$option.constructor.bind(data);
+		let cof=this.$option.constructor || (()=>{});
+
+		let constr=cof.bind(data);
 		await constr(...params);
 
 
@@ -122,6 +127,13 @@ async function createWorm(options){
 			id:insId
 		});
 
+	}
+	worm.from=function(insId,data){
+		let ins=this.get(insId);
+		for(let i in data)
+			ins[i]=data[i];
+
+		return ins;
 	}
 
 

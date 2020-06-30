@@ -13,13 +13,13 @@ class Transaction{
 	}
 	async _init(){
 		this.conn=await this.session.getConnection();
+//console.log("a")
 
 		await this.conn.execute("set autocommit=0");
 		//console.log(`select * from ? where _id= ?`,[this.wormname,this.insId]);
 
 
-
-		this._data=await this._queryRow(`select * from ${this.wormname} where _id= ?`,[this.insId]);
+		this._data=await this._queryRow(`select * from ${this.wormname} where _id= ? for update`,[this.insId]);
 		await this._loadData();
 	}
 	async _queryRow(){
@@ -37,8 +37,6 @@ class Transaction{
 	async _loadData(){
 
 		let data=typedef.sqldata2data(this._data,this.datadef);
-
-
 
 		for(let i in data){
 			this[i]=data[i];
