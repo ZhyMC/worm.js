@@ -37,7 +37,7 @@ class Transaction{
 	}
 	async _loadData(){
 
-		let data=typedef.sqldata2data(this._data,this.datadef,this.client);
+		let data=typedef.sqldata2data(this._data,this.datadef,this.client,this.insId);
 
 		for(let i in data){
 			this[i]=data[i];

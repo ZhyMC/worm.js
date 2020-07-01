@@ -48,7 +48,7 @@ module.exports={
 		return data;
 
 	},
-	sqldata2data(raw,datadef,db){
+	sqldata2data(raw,datadef,db,insId){
 
 		let data={};
 		for(let i in datadef)
@@ -60,7 +60,8 @@ module.exports={
 			if(parsed.type=="Class")
 				data[i]=db.model[parsed.subtype].get(raw[i]);
 			else if(parsed.type=="Array")
-				data[i]=db.model[parsed.subtype].Array();
+				data[i]=db.model[parsed.subtype].Array(insId);
+
 			else data[i]=raw[i];
 		}		
 

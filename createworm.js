@@ -10,9 +10,12 @@ async function createWorm(options){
 
 			this.$options=opt;
 			this.$id=opt.id;
+			this.$belong=opt.belong;
+
 			this.$isWorm=true;
 
 			this.$worm=worm;
+			this.$client=this.$worm.$client;
 
 			this.$wormname=this.$worm.$name
 
@@ -20,16 +23,22 @@ async function createWorm(options){
 
 		}
 		get(){
-			return this.$worm.$client.getRow(this.$worm.$name,this.$id,this.$worm.$data);
+			return this.$client.getRow(this.$wormname,this.$id,this.$worm.$data);
 		}
 		getId(){
 			return this.$id;
 		}
+		_get(){
+			return this.$client.getRawRow(this.$wormname,this.$id);
+		}
+		_set(keys,values){
+			return this.$client.update(this.$wormname,this.$id,keys,values);
+		}
 		_getTransaction(){
-			return this.$worm.$client.getTransaction(this.$worm.$name,this.$id,this.$worm.$data);
+			return this.$client.getTransaction(this.$worm.$name,this.$id,this.$worm.$data);
 		}
 		_commitTransaction(trans){
-			return this.$worm.$client.commitTransaction(trans);
+			return this.$client.commitTransaction(trans);
 		}
 		_init(){
 			this.$data=this.$worm.$option.data;
@@ -104,8 +113,8 @@ async function createWorm(options){
 
 		await this.$client.createSheet(this.$name,data);
 	}
-	worm.Array=function(){
-		return new wormarray(this);
+	worm.Array=function(insId){
+		return new wormarray(this,insId);
 	}
 	worm.getNamespace=function(){
 		return namespace.stringify(this.$namespace);

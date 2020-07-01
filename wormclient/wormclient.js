@@ -49,7 +49,7 @@ class wormclient{
 		return res.insertId;
 	}
 	async createSheet(sheet,data){
-		let struct=["_id int PRIMARY KEY AUTO_INCREMENT"];
+		let struct=["_id int PRIMARY KEY AUTO_INCREMENT","_array_insid int"];
 
 		for(let i in data){
 			struct.push(`${i} ${data[i]}`);
@@ -63,14 +63,26 @@ class wormclient{
 		return this.query(sql);
 	}
 	async getRow(wormname,insId,datadef){
-		let _data=await this.queryRow(`select * from ${wormname} where _id= ?`,[insId]);
-		let data=typedef.sqldata2data(_data,datadef);
+		let _data=await this.getRawRow(wormname,insId);
+		let data=typedef.sqldata2data(_data,datadef,this,insId);
 
-		for(let i in data){
+		/*for(let i in data){
 			this[i]=data[i];
-		}
+		}*/
 
 		return data;
+	}
+	async getRawRow(wormname,insId){
+		return await this.queryRow(`select * from ${wormname} where _id= ?`,[insId]);
+	}
+	async update(wormname,insId,keys,values){
+
+		let ks=[];
+		for(let i in keys){
+			ks.push(keys[i] + " = ?");
+		}
+		return await this.query(`update ${wormname} set ${ks.join(",")} WHERE _id = '${insId}'`,values);
+
 	}
 	async getTransaction(wormname,insId,datadef){
 
