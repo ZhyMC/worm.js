@@ -30,7 +30,7 @@ Worm.js 是一个 ORM 框架，即一种将面向对象编程的思想引入到�
 ----------------
 models/apple.js
 ```
-module.exports=(db)=>db.createWorn({
+module.exports=(db)=>db.createWorm({
 	name:"Apple", //声明类名
 	data:{  //声明属性
 		color:"text",
@@ -42,10 +42,10 @@ module.exports=(db)=>db.createWorn({
 	methods:{   //声明类的所有方法
 		getColor(){
 			return this.color;
-		}
+		},
 		isAte(){
 			return this.ate == 1;
-		}
+		},
 		eat(){
 			this.ate = 1;
 		}
@@ -57,7 +57,7 @@ module.exports=(db)=>db.createWorn({
 ----------------
 models/cup.js
 ```
-module.exports=(db)=>db.createWorn({
+module.exports=(db)=>db.createWorm({
 	name:"Cup",
 	data:{
 		water:"int",
@@ -86,9 +86,6 @@ module.exports=(db)=>db.createWorn({
 
 models/human.js
 ```
-let Cup=require("./cup.js");
-let Apple=require("./Apple.js");
-
 module.exports=(db)=>db.createWorm({
 	name:"Human",
 	data:{
@@ -97,9 +94,11 @@ module.exports=(db)=>db.createWorm({
 		apple:"Class(Apple)",
 		cup:"Class(Cup)"
 	},
-	constructor(name,age){
+	async constructor(name,age){
 		this.name = name;
 		this.age = age;
+		this.apple = await db.$Apple.new();
+		this.cup = await db.$Cup.new();
 	},
 	methods:{
 		async eatAll(){
@@ -116,7 +115,6 @@ module.exports=(db)=>db.createWorm({
 		}
 	}
 })
-
 ```
 
 ------------------
@@ -132,15 +130,17 @@ async function start(){
 		database:"mysql"
 	});
 
-	db.loadModels("./models/");
+	await db.loadModels("./models/");
 
-	let human = db.$Human.new();
+
+	let human = await db.$Human.new("zhy",20);
 
 
 	await human.eatAll();
 }
 
 start();
+
 
 ```
 

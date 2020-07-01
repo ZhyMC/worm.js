@@ -2,6 +2,8 @@ let Transaction=require(__dirname+"/../transaction/transaction.js");
 let Session=require(__dirname+"/mysqlsession.js");
 let createWorm=require(__dirname+"/../createworm.js");
 let typedef=require(__dirname+"/../typedef.js");
+let modelScanner=require(__dirname+"/../utils/modelScanner.js");
+let Path=require("path");
 
 class wormclient{
 	constructor(option){
@@ -80,6 +82,17 @@ class wormclient{
 	async commitTransaction(trans){
 		return await trans._close();
 
+	}
+	async loadModels(path,namespace_notforce){	
+		let models=modelScanner(path);
+		for(let i in models){
+			//console.log(Path.join(path,models[i].file))
+			let builder=require(Path.resolve(Path.join(path,models[i].file)));
+			let model=await builder(this);
+			if(namespace_notforce)continue;
+
+			model.setNamespace(models[i].space);
+		}
 	}
 	_addModel(model){
 		this["$"+model.$name]=model;

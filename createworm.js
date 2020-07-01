@@ -1,6 +1,6 @@
 let typedef=require(__dirname+"/typedef.js");
 let wormarray=require(__dirname+"/wormarray.js");
-
+let namespace=require(__dirname+"/namespace.js");
 
 async function createWorm(options){
 
@@ -90,6 +90,12 @@ async function createWorm(options){
 		this.$client = this.$option.client;
 		this.$data = this.$option.data;
 
+		if(!this.$option.namespace)
+			this.$namespace = namespace.parse("/")
+		else
+			this.$namespace = namespace.parse(this.$option.namespace);
+
+
 		let data={};
 		for(let i in this.$data){
 			data[i]=typedef.getTypeDef(this.$data[i]).sqltype;
@@ -100,6 +106,12 @@ async function createWorm(options){
 	}
 	worm.Array=function(){
 		return new wormarray(this);
+	}
+	worm.getNamespace=function(){
+		return namespace.stringify(this.$namespace);
+	}
+	worm.setNamespace=function(path){
+		this.$namespace=namespace.parse(path);
 	}
 	worm.new=async function(...params){
 
@@ -136,6 +148,7 @@ async function createWorm(options){
 
 		return ins;
 	}
+
 
 
 

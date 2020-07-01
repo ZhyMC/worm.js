@@ -15,7 +15,6 @@ class Transaction{
 	}
 	async _init(){
 		this.conn=await this.session.getConnection();
-//console.log("a")
 
 		await this.conn.execute("set autocommit=0");
 		//console.log(`select * from ? where _id= ?`,[this.wormname,this.insId]);
@@ -44,7 +43,7 @@ class Transaction{
 			this[i]=data[i];
 		}
 
-	
+
 	}
 	_getUserData(){
 		let data={};
