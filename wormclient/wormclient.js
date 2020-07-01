@@ -72,7 +72,7 @@ class wormclient{
 	}
 	async getTransaction(wormname,insId,datadef){
 
-		let trans=new Transaction(this.session,wormname,insId,datadef);
+		let trans=new Transaction(this,wormname,insId,datadef);
 		await trans._init();
 
 		return trans;

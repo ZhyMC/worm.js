@@ -7,6 +7,23 @@ wormclient.create({
 	database:"mysql",
 }).then(async(db)=>{
 
+
+	await db.createWorm({
+		name:"test",
+		data:{
+			name:"text",
+			banana:"Class(Banana)"
+		},
+		async constructor(){
+			this.banana=await db.$Banana.new("233");
+		},
+		methods:{
+			async getAllBananas(){
+				return this.banana;
+			}
+		}
+	})
+
 	await db.createWorm({
 		name:"Banana",
 		data:{
@@ -18,7 +35,6 @@ wormclient.create({
 		},
 		methods:{
 			getName(){
-//				console.log("a")
 				return this.name;
 			},
 			eat(){
@@ -31,32 +47,12 @@ wormclient.create({
 	});
 
 
-	await db.createWorm({
-		name:"people",
-		data:{
-			name:"text",
-			banana:db.$Banana.Array()
-		},
-		methods:{
-			async getAllBananas(){
-				await this.banana.$worm.new("test");
-				return this.banana.find({
-					name:"tes"
-				});
-			}
-		}
-	})
 
+	let test=await db.model.test.new();
 
-	let people=await db.model.people.new();
+	let arr=await test.getAllBananas();
+	console.log(await arr.getName());
 
-	let arr=await people.getAllBananas();
-	console.log(arr);
-	arr.forEach(async(x)=>{
-
-		console.log(x.$id,await x.getName());
-
-	});
 
 })
 

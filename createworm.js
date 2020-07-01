@@ -95,6 +95,7 @@ async function createWorm(options){
 			data[i]=typedef.getTypeDef(this.$data[i]).sqltype;
 		}
 
+
 		await this.$client.createSheet(this.$name,data);
 	}
 	worm.Array=function(){

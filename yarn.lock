@@ -4,5 +4,5 @@
 
 sql-where-builder@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.npmjs.org/sql-where-builder/-/sql-where-builder-1.2.1.tgz#5068e54d4dad3f552aad7ba0913108a0020eb566"
+  resolved "https://registry.yarnpkg.com/sql-where-builder/-/sql-where-builder-1.2.1.tgz#5068e54d4dad3f552aad7ba0913108a0020eb566"
   integrity sha512-DCKfA9vcOMly8005YRGj9eNtLseABOZuXblcC4IiGl8hu+wY45O0AC3Z8F05KmlCcapWp/x7EIwabMf3DRtm3A==

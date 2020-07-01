@@ -1,8 +1,10 @@
 let typedef=require(__dirname+"/../typedef.js");
 
 class Transaction{
-	constructor(session,wormname,insId,datadef){
-		this.session=session;
+	constructor(client,wormname,insId,datadef){
+		this.client=client;
+		this.session=this.client.session;
+
 		this.wormname=wormname;
 		this.insId=insId;
 		this.datadef=datadef;
@@ -36,11 +38,13 @@ class Transaction{
 	}
 	async _loadData(){
 
-		let data=typedef.sqldata2data(this._data,this.datadef);
+		let data=typedef.sqldata2data(this._data,this.datadef,this.client);
 
 		for(let i in data){
 			this[i]=data[i];
 		}
+
+	
 	}
 	_getUserData(){
 		let data={};
