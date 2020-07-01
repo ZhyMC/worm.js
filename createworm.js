@@ -1,6 +1,6 @@
 let typedef=require(__dirname+"/typedef.js");
 let wormarray=require(__dirname+"/wormarray.js");
-let namespace=require(__dirname+"/namespace.js");
+let namespace=require(__dirname+"/utils/namespace.js");
 
 async function createWorm(options){
 
