@@ -1,6 +1,6 @@
 {
   "name": "worm.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "",
   "license": "GPLv2",
   "dependencies": {
+    "mysql2": "^2.1.0",
     "sql-where-builder": "^1.2.1"
   }
 }
