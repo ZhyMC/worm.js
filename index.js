@@ -1,3 +1,3 @@
 
-module.exports=require(__dirname+"/wormclient/wormclient.js");
+module.exports=require(__dirname+"/src/wormclient/wormclient.js");
 

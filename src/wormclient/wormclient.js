@@ -62,13 +62,10 @@ class wormclient{
 
 		return this.query(sql);
 	}
-	async getRow(wormname,insId,datadef){
-	
-	}
 	async getRawRow(wormname,insId){
 		return await this.queryRow(`select * from ${wormname} where _id= ?`,[insId]);
 	}
-	async update(wormname,insId,keys,values){
+	async updateRawRow(wormname,insId,keys,values){
 
 		let ks=[];
 		for(let i in keys){

@@ -34,7 +34,7 @@ async function createWorm(options){
 			return this.$client.getRawRow(this.$wormname,this.$id);
 		}
 		_set(keys,values){
-			return this.$client.update(this.$wormname,this.$id,keys,values);
+			return this.$client.updateRawRow(this.$wormname,this.$id,keys,values);
 		}
 		_getTransaction(){
 			return this.$client.getTransaction(this.$worm.$name,this.$id,this.$worm.$data);

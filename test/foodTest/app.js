@@ -8,7 +8,7 @@ async function start(){
 		database:"mysql"
 	});
 
-	await db.loadModels("./models/");
+	await db.loadModels(__dirname+"/models/");
 
 
 	let human = await db.$Human.new("zhy",20);
