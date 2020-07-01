@@ -1,17 +1,14 @@
 {
   "name": "worm.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test/foodTest/app.js"
   },
   "author": "",
   "license": "GPLv2",
   "dependencies": {
     "sql-where-builder": "^1.2.1"
-  },
-  "scripts":{
-    "test":"node ./test/foodTest/app.js"
   }
 }
