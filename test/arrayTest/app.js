@@ -46,6 +46,7 @@ async function start(){
 	let arr = await db.$MyArray.new();
 
 console.log("当前数组里有",(await arr.getAll()).length,"个苹果");
+
 }
 
 start();

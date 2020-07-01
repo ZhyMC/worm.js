@@ -10,20 +10,22 @@ async function createWorm(options){
 
 			this.$options=opt;
 			this.$id=opt.id;
-			this.$belong=opt.belong;
 
 			this.$isWorm=true;
 
 			this.$worm=worm;
-			this.$client=this.$worm.$client;
 
+			this.$client=this.$worm.$client;
+			this.$data=this.$worm.$option.data;
 			this.$wormname=this.$worm.$name
 
-			this._init();
+			this._loadMethods(this.$worm.$option.methods);
 
 		}
-		get(){
-			return this.$client.getRow(this.$wormname,this.$id,this.$worm.$data);
+		async get(){
+			let _data=await this._get();
+	
+			return typedef.sqldata2data(_data,this.$data,this.$client,this.$id);
 		}
 		getId(){
 			return this.$id;
@@ -40,11 +42,7 @@ async function createWorm(options){
 		_commitTransaction(trans){
 			return this.$client.commitTransaction(trans);
 		}
-		_init(){
-			this.$data=this.$worm.$option.data;
 
-			this._loadMethods(this.$worm.$option.methods);
-		}
 		_loadMethods(methods){
 			for(let i in methods){
 
@@ -67,32 +65,12 @@ async function createWorm(options){
 	}
 
 
-	worm._handlePack=async function(pack){
-
-			try{
-				let result=await this.$client.query(pack);
-
-				if(result.length!=pack.reqs.length)throw new Error("pack query error");
-
-				for(let i in result){
-					pack.reqs[i].defer.resolve(result[i]);
-				}
-			}catch(e){
-				for(let i in pack.reqs){
-
-					pack.reqs[i].defer.reject(e);
-				}
-				
-			}
-			
-	}
-
-	worm._constr=function(options){
+	worm._constr=async function(options){
 		this.$option = options;
 		this.$isWormCls = true;
 
 
-		this._init();
+		await this._init();
 	}
 	worm._init=async function(){
 		this.$name = this.$option.name;
@@ -162,9 +140,7 @@ async function createWorm(options){
 
 
 
-	worm._constr(options);
-
-	await worm._init();
+	await worm._constr(options);
 
 	return worm;
 }

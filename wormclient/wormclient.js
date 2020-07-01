@@ -63,14 +63,7 @@ class wormclient{
 		return this.query(sql);
 	}
 	async getRow(wormname,insId,datadef){
-		let _data=await this.getRawRow(wormname,insId);
-		let data=typedef.sqldata2data(_data,datadef,this,insId);
-
-		/*for(let i in data){
-			this[i]=data[i];
-		}*/
-
-		return data;
+	
 	}
 	async getRawRow(wormname,insId){
 		return await this.queryRow(`select * from ${wormname} where _id= ?`,[insId]);
